@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    include: default
+  datasource:
+    url: jdbc:postgresql://ec2-54-246-115-40.eu-west-1.compute.amazonaws.com:5432/ddd3ep8g54u1lb?createDatabaseIfNotExist=true&useSSL=false&amp&autoReconnect=true&useLegacyDatetimeCode=false
+    username: icikybtenobnxy
+    password: a87cb3ef571c9c5b2f31ed3bd795fbc05c0e47e5d1ca9e0acb43203eaccd76b1
