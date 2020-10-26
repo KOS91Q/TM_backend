@@ -1,1 +1,1 @@
-web: java -jar build/libs/app.war
+web: java -jar -Dspring.profiles.active=prod build/libs/app.war

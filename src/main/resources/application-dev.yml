@@ -1,7 +1,0 @@
-spring:
-  profiles:
-    include: default
-  datasource:
-    url: jdbc:postgresql://localhost:3367/postgres?createDatabaseIfNotExist=true&useSSL=false&amp&autoReconnect=true&useLegacyDatetimeCode=false
-    username: postgres
-    password: 1111
