@@ -1,5 +1,7 @@
 package com.taskmanager.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.taskmanager.helper.Views;
 import com.taskmanager.model.Task;
 import com.taskmanager.payload.ApiResponse;
 import com.taskmanager.security.CurrentUser;
@@ -34,6 +36,7 @@ public class TaskController {
     }
 
     @PutMapping
+    @JsonView(Views.ProjectId.class)
     public @ResponseBody
     ResponseEntity<ApiResponse> update(@Valid @RequestBody Task task) {
         return taskService.update(task);

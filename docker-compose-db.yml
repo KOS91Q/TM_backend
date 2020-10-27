@@ -2,6 +2,7 @@ services:
   db:
     container_name: todo-db
     image: postgres
+    restart: always
     environment:
       POSTGRES_PASSWORD: 1111
     ports:

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.taskmanager.helper.Views;
 import com.taskmanager.payload.DTO;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.*;
 
@@ -18,11 +20,15 @@ public class Task implements DTO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonView(Views.Hide.class)
+    @JsonView(Views.ProjectId.class)
     @Column(name = "project_id")
     private Long projectId;
 
     private String name;
+
+    @Transient
+    @JsonView(Views.Hide.class)
+    private String oldName;
 
     @Enumerated(EnumType.STRING)
     private TaskStatus status = TaskStatus.NEW;

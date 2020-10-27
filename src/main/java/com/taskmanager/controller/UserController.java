@@ -1,6 +1,8 @@
 package com.taskmanager.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.taskmanager.exception.ResourceNotFoundException;
+import com.taskmanager.helper.Views;
 import com.taskmanager.model.User;
 import com.taskmanager.repository.UserRepository;
 import com.taskmanager.security.CurrentUser;
@@ -22,6 +24,7 @@ public class UserController {
 
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
+    @JsonView(Views.Public.class)
     public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
         return userRepository.findById(userPrincipal.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
