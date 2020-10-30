@@ -41,7 +41,7 @@ public class ProjectServiceImpl implements ProjectService {
             );
         } else {
             return new ResponseEntity<>(
-                    new ApiResponse(ResponseStatus.warn, project, "Project not updated"),
+                    new ApiResponse(ResponseStatus.warning, project, "Project not updated"),
                     HttpStatus.BAD_REQUEST
             );
         }
@@ -57,7 +57,7 @@ public class ProjectServiceImpl implements ProjectService {
         Project deleteProject = projectRepository.findById(project.getId()).orElse(null);
         if (deleteProject == null){
             return new ResponseEntity<>(
-                    new ApiResponse(ResponseStatus.warn, project, "Project not found"),
+                    new ApiResponse(ResponseStatus.warning, project, "Project not found"),
                     HttpStatus.OK
             );
         }

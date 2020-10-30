@@ -2,10 +2,9 @@ package com.taskmanager.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.taskmanager.helper.Views;
+import com.taskmanager.model.Project;
 import com.taskmanager.model.Task;
 import com.taskmanager.payload.ApiResponse;
-import com.taskmanager.security.CurrentUser;
-import com.taskmanager.security.UserPrincipal;
 import com.taskmanager.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -33,6 +32,11 @@ public class TaskController {
     public @ResponseBody
     ResponseEntity<ApiResponse> delete(@RequestBody Task task) {
         return taskService.delete(task);
+    }
+
+    @DeleteMapping("/multiple")
+    public ResponseEntity<ApiResponse> deleteMultiple(@RequestBody Project project) {
+        return taskService.deleteMultiple(project);
     }
 
     @PutMapping

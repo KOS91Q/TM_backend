@@ -1,9 +1,9 @@
 package com.taskmanager.service;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.taskmanager.exception.ResourceNotFoundException;
-import com.taskmanager.helper.Views;
+import com.taskmanager.model.Project;
 import com.taskmanager.model.Task;
+import com.taskmanager.model.TaskStatus;
 import com.taskmanager.payload.ApiResponse;
 import com.taskmanager.payload.ResponseStatus;
 import com.taskmanager.repository.ProjectRepository;
@@ -23,6 +23,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public ResponseEntity<ApiResponse> save(Task task) {
+        task.setStatus(TaskStatus.NEW);
         return new ResponseEntity<>(
                 new ApiResponse(
                         ResponseStatus.success,
@@ -38,13 +39,22 @@ public class TaskServiceImpl implements TaskService {
         Task deleteTask = taskRepository.findById(task.getId()).orElse(null);
         if (deleteTask == null) {
             return new ResponseEntity<>(
-                    new ApiResponse(ResponseStatus.warn, task, "Task not found"),
+                    new ApiResponse(ResponseStatus.warning, task, "Task not found"),
                     HttpStatus.OK
             );
         }
         taskRepository.deleteById(task.getId());
         return new ResponseEntity<>(
                 new ApiResponse(ResponseStatus.info, task, "Task " + deleteTask.getName() + " deleted"),
+                HttpStatus.OK
+        );
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse> deleteMultiple(Project project) {
+        taskRepository.deleteAll(project.getTasks());
+        return new ResponseEntity<>(
+                new ApiResponse(ResponseStatus.info, project, "deleted " + project.getTasks().size() + " Tasks"),
                 HttpStatus.OK
         );
     }
@@ -57,35 +67,41 @@ public class TaskServiceImpl implements TaskService {
     private ApiResponse updateResponse(Task task) {
         Task updTask = taskRepository.findById(task.getId()).orElse(null);
         if (updTask == null) {
-            return new ApiResponse(ResponseStatus.warn, task, "Task not found");
+            return new ApiResponse(ResponseStatus.warning, task, "Task not found");
         } else if (task.getName() != null && !task.getName().isEmpty()) {
             updTask.setName(task.getName());
             return new ApiResponse(
                     ResponseStatus.info,
                     taskRepository.save(updTask),
-                    "Task renamed from " + task.getOldName() + " to " + updTask.getName()
+                    "Task " + task.getOldName() + " renamed to " + updTask.getName()
             );
         } else if (task.getStatus() != null) {
             updTask.setStatus(task.getStatus());
             return new ApiResponse(
                     ResponseStatus.info,
                     taskRepository.save(updTask),
-                    "Task " + updTask.getName() + " status changed to " + updTask.getStatus().get()
+                    "Task " + updTask.getName() + " status updated to " + updTask.getStatus().get()
+            );
+        } else if (task.getDeadline() != null) {
+            updTask.setDeadline(task.getDeadline());
+            return new ApiResponse(
+                    ResponseStatus.info,
+                    taskRepository.save(updTask),
+                    "Task " + updTask.getName() + " deadline updated to " + updTask.getDeadline()
             );
         } else if (task.getProjectId() != null && !updTask.getProjectId().equals(task.getProjectId())) {
             updTask.setProjectId(task.getProjectId());
             return new ApiResponse(
-                    ResponseStatus.warn,
+                    ResponseStatus.info,
                     taskRepository.save(updTask),
                     "Task " + updTask.getName() + " moved to " +
                             projectRepository.findById(task.getProjectId())
                                     .orElseThrow(() -> new ResourceNotFoundException("Project", "id", task.getProjectId()))
-                                    .getName() +
-                            " project"
+                                    .getName() + " project"
             );
         } else {
             return new ApiResponse(
-                    ResponseStatus.warn,
+                    ResponseStatus.warning,
                     taskRepository.save(updTask),
                     "Task " + updTask.getName() + " has not changed"
             );

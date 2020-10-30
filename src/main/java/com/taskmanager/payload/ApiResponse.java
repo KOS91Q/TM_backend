@@ -3,8 +3,6 @@ package com.taskmanager.payload;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Enumerated;
-
 @Getter
 @Setter
 public class ApiResponse {

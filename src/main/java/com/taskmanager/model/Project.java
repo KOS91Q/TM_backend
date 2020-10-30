@@ -24,6 +24,7 @@ public class Project implements DTO {
 
     @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "project_id")
+    @OrderBy("id")
     private List<Task> tasks = new ArrayList<>();
 
     @JsonView(Views.Hide.class)

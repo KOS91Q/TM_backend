@@ -4,10 +4,9 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.taskmanager.helper.Views;
 import com.taskmanager.payload.DTO;
 import lombok.*;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -26,10 +25,12 @@ public class Task implements DTO {
 
     private String name;
 
+    private LocalDate deadline = null;
+
     @Transient
     @JsonView(Views.Hide.class)
     private String oldName;
 
     @Enumerated(EnumType.STRING)
-    private TaskStatus status = TaskStatus.NEW;
+    private TaskStatus status;
 }

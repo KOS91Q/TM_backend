@@ -44,6 +44,7 @@ public class User {
 
     @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "user_id")
+    @OrderBy("id")
     private List<Project> projects = new ArrayList<>();
 
     @JsonIgnore
