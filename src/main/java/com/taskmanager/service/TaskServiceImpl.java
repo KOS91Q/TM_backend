@@ -91,6 +91,7 @@ public class TaskServiceImpl implements TaskService {
             );
         } else if (task.getProjectId() != null && !updTask.getProjectId().equals(task.getProjectId())) {
             updTask.setProjectId(task.getProjectId());
+            updTask.setPos(task.getPos());
             return new ApiResponse(
                     ResponseStatus.info,
                     taskRepository.save(updTask),
@@ -98,6 +99,13 @@ public class TaskServiceImpl implements TaskService {
                             projectRepository.findById(task.getProjectId())
                                     .orElseThrow(() -> new ResourceNotFoundException("Project", "id", task.getProjectId()))
                                     .getName() + " project"
+            );
+        } else if (task.getPos() != null && !updTask.getPos().equals(task.getPos())) {
+            updTask.setPos(task.getPos());
+            return new ApiResponse(
+                    ResponseStatus.info,
+                    taskRepository.save(updTask),
+                    "Task " + updTask.getName() + " changed position"
             );
         } else {
             return new ApiResponse(

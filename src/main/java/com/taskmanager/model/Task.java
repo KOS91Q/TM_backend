@@ -27,6 +27,8 @@ public class Task implements DTO {
 
     private LocalDate deadline = null;
 
+    private Integer pos;
+
     @Transient
     @JsonView(Views.Hide.class)
     private String oldName;
